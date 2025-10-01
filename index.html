@@ -1,0 +1,3024 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Infinite Craft | Ultimate Edition</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        :root {
+            --primary: #4a00e0;
+            --secondary: #8e2de2;
+            --accent: #ff6b6b;
+            --light: #f7f7f7;
+            --dark: #1a1a2e;
+            --success: #00d2b8;
+            --warning: #ffd166;
+            --danger: #ff6b6b;
+            --pet: #ff9e64;
+            --mystical: #c56cf0;
+            --food: #ff9f43;
+            --tech: #48dbfb;
+            --studio: #1dd1a1;
+            --ocean: #00cec9;
+            --space: #6c5ce7;
+            --fantasy: #fd79a8;
+            --poop: #8B4513;
+        }
+
+        body {
+            background: linear-gradient(135deg, #4a00e0, #8e2de2);
+            color: var(--light);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        header {
+            background-color: rgba(26, 26, 46, 0.9);
+            padding: 1rem 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+            border-bottom: 2px solid var(--accent);
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .logo i {
+            font-size: 2.2rem;
+            color: var(--accent);
+            text-shadow: 0 0 10px rgba(255, 107, 107, 0.5);
+        }
+
+        .logo h1 {
+            font-size: 2rem;
+            font-weight: 800;
+            background: linear-gradient(45deg, var(--accent), var(--warning));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        nav ul {
+            display: flex;
+            list-style: none;
+            gap: 1.5rem;
+        }
+
+        nav a {
+            color: var(--light);
+            text-decoration: none;
+            font-weight: 600;
+            transition: all 0.3s;
+            padding: 0.5rem 1rem;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        nav a:hover {
+            color: var(--accent);
+            background-color: rgba(255, 255, 255, 0.1);
+            transform: translateY(-2px);
+        }
+
+        .account-info {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .account-name {
+            font-weight: 600;
+            background: rgba(255, 255, 255, 0.1);
+            padding: 0.5rem 1rem;
+            border-radius: 8px;
+        }
+
+        .container {
+            max-width: 1600px;
+            margin: 2rem auto;
+            padding: 0 1.5rem;
+            flex: 1;
+        }
+
+        .game-area {
+            display: grid;
+            grid-template-columns: 1fr 400px;
+            gap: 2rem;
+        }
+
+        .crafting-board {
+            background: linear-gradient(135deg, rgba(255, 255, 255, 0.1), rgba(255, 255, 255, 0.05));
+            border-radius: 16px;
+            padding: 2rem;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .board-title {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 2rem;
+        }
+
+        .board-title h2 {
+            font-size: 1.8rem;
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+            gap: 0.8rem;
+        }
+
+        .board-title h2 i {
+            color: var(--accent);
+        }
+
+        .elements-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+            gap: 1.2rem;
+            margin-top: 1.5rem;
+            max-height: 450px;
+            overflow-y: auto;
+            padding: 1rem;
+            background: rgba(0, 0, 0, 0.2);
+            border-radius: 12px;
+        }
+
+        .element {
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            border-radius: 12px;
+            padding: 1.2rem;
+            text-align: center;
+            cursor: grab;
+            transition: all 0.3s;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+            user-select: none;
+            position: relative;
+            border: 2px solid transparent;
+        }
+
+        .element:hover {
+            transform: translateY(-8px) scale(1.05);
+            box-shadow: 0 12px 20px rgba(0, 0, 0, 0.3);
+            border-color: var(--accent);
+        }
+
+        .element i {
+            font-size: 2.5rem;
+            margin-bottom: 0.8rem;
+            filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.3));
+        }
+
+        .element span {
+            display: block;
+            font-weight: 600;
+            font-size: 1rem;
+        }
+
+        .pet-element {
+            background: linear-gradient(135deg, var(--pet), #ff7e5f);
+        }
+
+        .mystical-element {
+            background: linear-gradient(135deg, var(--mystical), #8e44ad);
+        }
+
+        .food-element {
+            background: linear-gradient(135deg, var(--food), #e67e22);
+        }
+
+        .tech-element {
+            background: linear-gradient(135deg, var(--tech), #3498db);
+        }
+
+        .studio-element {
+            background: linear-gradient(135deg, var(--studio), #16a085);
+        }
+
+        .ocean-element {
+            background: linear-gradient(135deg, var(--ocean), #00b894);
+        }
+
+        .space-element {
+            background: linear-gradient(135deg, var(--space), #6c5ce7);
+        }
+
+        .fantasy-element {
+            background: linear-gradient(135deg, var(--fantasy), #fd79a8);
+        }
+
+        .poop-element {
+            background: linear-gradient(135deg, var(--poop), #654321);
+        }
+
+        .element-badge {
+            position: absolute;
+            top: -8px;
+            right: -8px;
+            background-color: var(--accent);
+            color: white;
+            border-radius: 50%;
+            width: 26px;
+            height: 26px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.7rem;
+            font-weight: 700;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
+        }
+
+        .mystical-badge {
+            background-color: var(--mystical);
+        }
+
+        .pet-badge {
+            background-color: var(--pet);
+        }
+
+        .food-badge {
+            background-color: var(--food);
+        }
+
+        .tech-badge {
+            background-color: var(--tech);
+        }
+
+        .studio-badge {
+            background-color: var(--studio);
+        }
+
+        .ocean-badge {
+            background-color: var(--ocean);
+        }
+
+        .space-badge {
+            background-color: var(--space);
+        }
+
+        .fantasy-badge {
+            background-color: var(--fantasy);
+        }
+
+        .poop-badge {
+            background-color: var(--poop);
+        }
+
+        .crafting-area {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin: 2.5rem 0;
+            gap: 1.5rem;
+            position: relative;
+        }
+
+        .slot {
+            width: 160px;
+            height: 160px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 16px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            font-size: 3.5rem;
+            cursor: pointer;
+            transition: all 0.3s;
+            position: relative;
+            border: 2px dashed rgba(255, 255, 255, 0.3);
+        }
+
+        .slot:hover {
+            background: rgba(255, 255, 255, 0.2);
+            border-color: var(--accent);
+        }
+
+        .slot.active {
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            border: 2px solid var(--accent);
+        }
+
+        .slot span {
+            font-size: 1rem;
+            margin-top: 0.8rem;
+            opacity: 0.8;
+        }
+
+        .combine-btn {
+            background: linear-gradient(135deg, var(--accent), #ff8e8e);
+            color: white;
+            border: none;
+            border-radius: 50%;
+            width: 80px;
+            height: 80px;
+            font-size: 2rem;
+            cursor: pointer;
+            transition: all 0.3s;
+            box-shadow: 0 4px 15px rgba(255, 107, 107, 0.4);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .combine-btn:hover {
+            transform: scale(1.15) rotate(90deg);
+            box-shadow: 0 6px 20px rgba(255, 107, 107, 0.6);
+        }
+
+        .triple-combine-btn {
+            background: linear-gradient(135deg, var(--mystical), #8e44ad);
+            color: white;
+            border: none;
+            border-radius: 50%;
+            width: 80px;
+            height: 80px;
+            font-size: 2rem;
+            cursor: pointer;
+            transition: all 0.3s;
+            box-shadow: 0 4px 15px rgba(198, 108, 240, 0.4);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .triple-combine-btn:hover {
+            transform: scale(1.15) rotate(-90deg);
+            box-shadow: 0 6px 20px rgba(198, 108, 240, 0.6);
+        }
+
+        .result {
+            text-align: center;
+            margin-top: 2rem;
+        }
+
+        .result-element {
+            background: linear-gradient(135deg, var(--success), #00b894);
+            border-radius: 16px;
+            padding: 2rem;
+            display: inline-block;
+            margin-top: 1.5rem;
+            min-width: 250px;
+            box-shadow: 0 8px 25px rgba(0, 210, 184, 0.3);
+            border: 2px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .result-element i {
+            font-size: 4rem;
+            margin-bottom: 1rem;
+            filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.3));
+        }
+
+        .result-element span {
+            display: block;
+            font-size: 1.5rem;
+            font-weight: 700;
+        }
+
+        .new-element-notice {
+            background: linear-gradient(135deg, var(--warning), #ff9f43);
+            border-radius: 12px;
+            padding: 1.2rem;
+            margin-top: 1.5rem;
+            text-align: center;
+            animation: pulse 2s infinite;
+            box-shadow: 0 4px 15px rgba(255, 209, 102, 0.4);
+            border: 2px solid rgba(255, 255, 255, 0.2);
+        }
+
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+            100% { transform: scale(1); }
+        }
+
+        .sidebar {
+            display: flex;
+            flex-direction: column;
+            gap: 2rem;
+        }
+
+        .card {
+            background: linear-gradient(135deg, rgba(255, 255, 255, 0.1), rgba(255, 255, 255, 0.05));
+            border-radius: 16px;
+            padding: 2rem;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .card h3 {
+            font-size: 1.4rem;
+            margin-bottom: 1.5rem;
+            display: flex;
+            align-items: center;
+            gap: 0.8rem;
+        }
+
+        .card h3 i {
+            color: var(--accent);
+        }
+
+        .stats {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 1.2rem;
+        }
+
+        .stat {
+            text-align: center;
+            padding: 1.2rem;
+            background: rgba(0, 0, 0, 0.2);
+            border-radius: 12px;
+            transition: all 0.3s;
+        }
+
+        .stat:hover {
+            transform: translateY(-5px);
+            background: rgba(0, 0, 0, 0.3);
+        }
+
+        .stat-value {
+            font-size: 2.2rem;
+            font-weight: 800;
+            margin-bottom: 0.5rem;
+            background: linear-gradient(45deg, var(--accent), var(--warning));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .stat-label {
+            font-size: 1rem;
+            opacity: 0.8;
+            font-weight: 600;
+        }
+
+        .discoveries-list {
+            max-height: 350px;
+            overflow-y: auto;
+            padding-right: 0.5rem;
+        }
+
+        .discovery-item {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            padding: 1.2rem;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            cursor: pointer;
+            transition: all 0.3s;
+            border-radius: 8px;
+        }
+
+        .discovery-item:hover {
+            background: rgba(255, 255, 255, 0.1);
+            transform: translateX(5px);
+        }
+
+        .discovery-item:last-child {
+            border-bottom: none;
+        }
+
+        .discovery-item i {
+            font-size: 1.8rem;
+        }
+
+        .pet-item {
+            color: var(--pet);
+        }
+
+        .mystical-item {
+            color: var(--mystical);
+        }
+
+        .food-item {
+            color: var(--food);
+        }
+
+        .tech-item {
+            color: var(--tech);
+        }
+
+        .studio-item {
+            color: var(--studio);
+        }
+
+        .ocean-item {
+            color: var(--ocean);
+        }
+
+        .space-item {
+            color: var(--space);
+        }
+
+        .fantasy-item {
+            color: var(--fantasy);
+        }
+
+        .poop-item {
+            color: var(--poop);
+        }
+
+        .btn {
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            color: white;
+            border: none;
+            border-radius: 10px;
+            padding: 1rem 1.5rem;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.3s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.8rem;
+            box-shadow: 0 4px 12px rgba(74, 0, 224, 0.3);
+        }
+
+        .btn:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 20px rgba(74, 0, 224, 0.5);
+        }
+
+        .btn-accent {
+            background: linear-gradient(135deg, var(--accent), #ff8e8e);
+        }
+
+        .btn-accent:hover {
+            box-shadow: 0 8px 20px rgba(255, 107, 107, 0.5);
+        }
+
+        .btn-success {
+            background: linear-gradient(135deg, var(--success), #00b894);
+        }
+
+        .btn-success:hover {
+            box-shadow: 0 8px 20px rgba(0, 210, 184, 0.5);
+        }
+
+        .btn-pet {
+            background: linear-gradient(135deg, var(--pet), #ff7e5f);
+        }
+
+        .btn-pet:hover {
+            box-shadow: 0 8px 20px rgba(255, 158, 100, 0.5);
+        }
+
+        .btn-mystical {
+            background: linear-gradient(135deg, var(--mystical), #8e44ad);
+        }
+
+        .btn-mystical:hover {
+            box-shadow: 0 8px 20px rgba(198, 108, 240, 0.5);
+        }
+
+        .btn-studio {
+            background: linear-gradient(135deg, var(--studio), #16a085);
+        }
+
+        .btn-studio:hover {
+            box-shadow: 0 8px 20px rgba(29, 209, 161, 0.5);
+        }
+
+        .btn-ocean {
+            background: linear-gradient(135deg, var(--ocean), #00b894);
+        }
+
+        .btn-space {
+            background: linear-gradient(135deg, var(--space), #6c5ce7);
+        }
+
+        .btn-fantasy {
+            background: linear-gradient(135deg, var(--fantasy), #fd79a8);
+        }
+
+        .btn-poop {
+            background: linear-gradient(135deg, var(--poop), #654321);
+        }
+
+        .action-buttons {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 1rem;
+        }
+
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.8);
+            z-index: 1000;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .modal-content {
+            background: linear-gradient(135deg, #4a00e0, #8e2de2);
+            border-radius: 20px;
+            width: 90%;
+            max-width: 700px;
+            padding: 2.5rem;
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.5);
+            position: relative;
+            max-height: 90vh;
+            overflow-y: auto;
+            border: 2px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 2rem;
+        }
+
+        .modal-header h2 {
+            font-size: 1.8rem;
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+            gap: 0.8rem;
+        }
+
+        .close-btn {
+            background: none;
+            border: none;
+            color: var(--light);
+            font-size: 2rem;
+            cursor: pointer;
+            transition: color 0.3s;
+            width: 40px;
+            height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+        }
+
+        .close-btn:hover {
+            color: var(--accent);
+            background: rgba(255, 255, 255, 0.1);
+        }
+
+        .modal-body {
+            margin-bottom: 2rem;
+        }
+
+        .modal-footer {
+            display: flex;
+            justify-content: flex-end;
+            gap: 1rem;
+        }
+
+        .form-group {
+            margin-bottom: 1.8rem;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 0.8rem;
+            font-weight: 600;
+            font-size: 1.1rem;
+        }
+
+        .form-group input {
+            width: 100%;
+            padding: 1rem;
+            border-radius: 10px;
+            border: none;
+            background: rgba(255, 255, 255, 0.1);
+            color: var(--light);
+            font-size: 1rem;
+            border: 2px solid transparent;
+        }
+
+        .form-group input:focus {
+            outline: none;
+            border-color: var(--accent);
+            background: rgba(255, 255, 255, 0.15);
+        }
+
+        .form-group input::placeholder {
+            color: rgba(255, 255, 255, 0.6);
+        }
+
+        .password-strength {
+            height: 6px;
+            background-color: rgba(255, 255, 255, 0.2);
+            border-radius: 3px;
+            margin-top: 0.8rem;
+            overflow: hidden;
+        }
+
+        .password-strength-bar {
+            height: 100%;
+            width: 0%;
+            transition: width 0.3s;
+        }
+
+        .password-strength.weak .password-strength-bar {
+            width: 33%;
+            background-color: var(--danger);
+        }
+
+        .password-strength.medium .password-strength-bar {
+            width: 66%;
+            background-color: var(--warning);
+        }
+
+        .password-strength.strong .password-strength-bar {
+            width: 100%;
+            background-color: var(--success);
+        }
+
+        .account-list {
+            display: flex;
+            flex-direction: column;
+            gap: 1.2rem;
+            margin-top: 1.5rem;
+        }
+
+        .account-item {
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 12px;
+            padding: 1.5rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            cursor: pointer;
+            transition: all 0.3s;
+            border: 2px solid transparent;
+        }
+
+        .account-item:hover {
+            transform: scale(1.02);
+            background: rgba(255, 255, 255, 0.2);
+        }
+
+        .account-item.active {
+            background: rgba(255, 255, 255, 0.25);
+            border: 2px solid var(--accent);
+        }
+
+        .pet-collection, .recipe-list {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 1.2rem;
+            margin-top: 1.5rem;
+        }
+
+        .pet-card, .recipe-card {
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 12px;
+            padding: 1.5rem;
+            text-align: center;
+            transition: all 0.3s;
+            border: 2px solid transparent;
+        }
+
+        .pet-card:hover, .recipe-card:hover {
+            transform: scale(1.05);
+            background: rgba(255, 255, 255, 0.2);
+            border-color: var(--accent);
+        }
+
+        .pet-card i, .recipe-card i {
+            font-size: 2.8rem;
+            margin-bottom: 1rem;
+        }
+
+        .pet-card span, .recipe-card span {
+            display: block;
+            font-weight: 600;
+            font-size: 1.1rem;
+        }
+
+        .pet-card.locked, .recipe-card.locked {
+            opacity: 0.5;
+        }
+
+        .recipe-card {
+            cursor: pointer;
+        }
+
+        .recipe-ingredients {
+            font-size: 0.9rem;
+            margin-top: 0.8rem;
+            opacity: 0.8;
+        }
+
+        .quick-craft-options {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 1.2rem;
+            margin-top: 1.5rem;
+        }
+
+        .quick-craft-option {
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 12px;
+            padding: 1.5rem;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s;
+            border: 2px solid transparent;
+        }
+
+        .quick-craft-option:hover {
+            transform: scale(1.05);
+            background: rgba(255, 255, 255, 0.2);
+            border-color: var(--accent);
+        }
+
+        .element-categories {
+            display: flex;
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+            flex-wrap: wrap;
+        }
+
+        .category-btn {
+            background: rgba(255, 255, 255, 0.1);
+            border: none;
+            border-radius: 8px;
+            padding: 0.8rem 1.2rem;
+            color: var(--light);
+            cursor: pointer;
+            transition: all 0.3s;
+            font-weight: 600;
+        }
+
+        .category-btn.active {
+            background: var(--accent);
+            color: var(--dark);
+        }
+
+        .category-btn:hover {
+            transform: translateY(-3px);
+            background: rgba(255, 255, 255, 0.2);
+        }
+
+        footer {
+            background-color: rgba(26, 26, 46, 0.9);
+            padding: 2rem;
+            text-align: center;
+            margin-top: 3rem;
+            border-top: 2px solid var(--accent);
+        }
+
+        .footer-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .copyright {
+            font-size: 1rem;
+            opacity: 0.8;
+        }
+
+        .footer-links {
+            display: flex;
+            gap: 2rem;
+        }
+
+        .footer-links a {
+            color: var(--light);
+            text-decoration: none;
+            transition: color 0.3s;
+            font-weight: 600;
+        }
+
+        .footer-links a:hover {
+            color: var(--accent);
+        }
+
+        @media (max-width: 1200px) {
+            .game-area {
+                grid-template-columns: 1fr;
+            }
+            
+            .crafting-area {
+                flex-direction: column;
+                align-items: center;
+            }
+            
+            .combine-btn, .triple-combine-btn {
+                transform: rotate(90deg);
+            }
+        }
+
+        @media (max-width: 768px) {
+            .footer-content {
+                flex-direction: column;
+                gap: 1.5rem;
+            }
+            
+            nav ul {
+                gap: 1rem;
+            }
+            
+            .pet-collection, .recipe-list {
+                grid-template-columns: repeat(2, 1fr);
+            }
+            
+            .quick-craft-options {
+                grid-template-columns: 1fr;
+            }
+            
+            .action-buttons {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .file-input {
+            display: none;
+        }
+
+        .world-active {
+            border: 3px solid var(--success) !important;
+            box-shadow: 0 0 15px var(--success) !important;
+        }
+
+        .auto-craft-suggestion {
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 8px;
+            padding: 1rem;
+            margin-top: 1rem;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .auto-craft-suggestion:hover {
+            background: rgba(255, 255, 255, 0.2);
+            transform: translateY(-3px);
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="logo">
+            <i class="fas fa-infinity"></i>
+            <h1>Infinite Craft</h1>
+        </div>
+        <nav>
+            <ul>
+                <li><a href="#"><i class="fas fa-home"></i> Home</a></li>
+                <li><a href="#" id="recipes-btn"><i class="fas fa-book"></i> Recipes</a></li>
+                <li><a href="#" id="pets-btn"><i class="fas fa-paw"></i> Pets</a></li>
+                <li><a href="#" id="quick-craft-btn"><i class="fas fa-bolt"></i> Quick Craft</a></li>
+                <li><a href="#" id="worlds-btn"><i class="fas fa-globe"></i> Worlds</a></li>
+                <li><a href="#" id="accounts-btn"><i class="fas fa-users"></i> Accounts</a></li>
+                <li><a href="#" id="settings-btn"><i class="fas fa-cog"></i> Settings</a></li>
+            </ul>
+        </nav>
+        <div class="account-info">
+            <span class="account-name" id="current-account">Guest</span>
+            <button class="btn btn-accent" id="switch-account-btn">
+                <i class="fas fa-sync-alt"></i> Switch
+            </button>
+        </div>
+    </header>
+
+    <div class="container">
+        <div class="game-area">
+            <div class="crafting-board">
+                <div class="board-title">
+                    <h2><i class="fas fa-hammer"></i> Crafting Board</h2>
+                    <div style="display: flex; gap: 1rem;">
+                        <button class="btn btn-accent" id="new-game-btn">
+                            <i class="fas fa-plus"></i> New Game
+                        </button>
+                        <button class="btn btn-mystical" id="triple-craft-btn">
+                            <i class="fas fa-magic"></i> Triple Craft
+                        </button>
+                        <button class="btn btn-ocean" id="auto-craft-btn">
+                            <i class="fas fa-robot"></i> Auto Craft
+                        </button>
+                    </div>
+                </div>
+                
+                <div class="element-categories">
+                    <button class="category-btn active" data-category="all">All Elements</button>
+                    <button class="category-btn" data-category="basic">Basic</button>
+                    <button class="category-btn" data-category="pet">Pets</button>
+                    <button class="category-btn" data-category="mystical">Mystical</button>
+                    <button class="category-btn" data-category="tech">Technology</button>
+                    <button class="category-btn" data-category="studio">Studios</button>
+                    <button class="category-btn" data-category="poop">Poop</button>
+                </div>
+                
+                <div class="elements-grid" id="elements-grid">
+                    <!-- Elements will be dynamically added here -->
+                </div>
+                
+                <div class="crafting-area">
+                    <div class="slot" id="slot1">
+                        <i class="fas fa-question"></i>
+                        <span>Drag element here</span>
+                    </div>
+                    <button class="combine-btn" id="combine-btn">
+                        <i class="fas fa-plus"></i>
+                    </button>
+                    <div class="slot" id="slot2">
+                        <i class="fas fa-question"></i>
+                        <span>Drag element here</span>
+                    </div>
+                    <button class="triple-combine-btn" id="triple-combine-btn" style="display: none;">
+                        <i class="fas fa-star"></i>
+                    </button>
+                    <div class="slot" id="slot3" style="display: none;">
+                        <i class="fas fa-question"></i>
+                        <span>Third element (triple)</span>
+                    </div>
+                </div>
+
+                <div id="auto-craft-suggestions" style="display: none;">
+                    <h3>Auto Craft Suggestions:</h3>
+                    <div id="suggestions-list">
+                        <!-- Auto craft suggestions will appear here -->
+                    </div>
+                </div>
+                
+                <div class="result">
+                    <h3>Result:</h3>
+                    <div class="result-element" id="result-element">
+                        <i class="fas fa-question"></i>
+                        <span>Combine elements to discover new ones!</span>
+                    </div>
+                    <div class="new-element-notice" id="new-element-notice" style="display: none;">
+                        <i class="fas fa-star"></i> New element discovered and added to your collection!
+                    </div>
+                </div>
+            </div>
+            
+            <div class="sidebar">
+                <div class="card">
+                    <h3><i class="fas fa-chart-line"></i> Game Stats</h3>
+                    <div class="stats">
+                        <div class="stat">
+                            <div class="stat-value" id="elements-count">8</div>
+                            <div class="stat-label">Elements</div>
+                        </div>
+                        <div class="stat">
+                            <div class="stat-value" id="combinations-count">0</div>
+                            <div class="stat-label">Combinations</div>
+                        </div>
+                        <div class="stat">
+                            <div class="stat-value" id="pets-count">2</div>
+                            <div class="stat-label">Pets</div>
+                        </div>
+                        <div class="stat">
+                            <div class="stat-value" id="mystical-count">0</div>
+                            <div class="stat-label">Mystical</div>
+                        </div>
+                        <div class="stat">
+                            <div class="stat-value" id="studios-count">0</div>
+                            <div class="stat-label">Studios</div>
+                        </div>
+                        <div class="stat">
+                            <div class="stat-value" id="worlds-count">1</div>
+                            <div class="stat-label">Worlds</div>
+                        </div>
+                        <div class="stat">
+                            <div class="stat-value" id="poop-count">0</div>
+                            <div class="stat-label">Poop Elements</div>
+                        </div>
+                        <div class="stat">
+                            <div class="stat-value" id="coins-count">1250</div>
+                            <div class="stat-label">Coins</div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="card">
+                    <h3><i class="fas fa-star"></i> Recent Discoveries</h3>
+                    <div class="discoveries-list" id="discoveries-list">
+                        <!-- Discoveries will be dynamically added here -->
+                    </div>
+                </div>
+                
+                <div class="card">
+                    <h3><i class="fas fa-tools"></i> Actions</h3>
+                    <div class="action-buttons">
+                        <button class="btn btn-success" id="save-btn">
+                            <i class="fas fa-save"></i> Save Game
+                        </button>
+                        <button class="btn" id="load-btn">
+                            <i class="fas fa-folder-open"></i> Load Game
+                        </button>
+                        <button class="btn btn-studio" id="studio-btn">
+                            <i class="fas fa-film"></i> Studio Crafting
+                        </button>
+                        <button class="btn btn-space" id="worlds-btn">
+                            <i class="fas fa-globe"></i> World Travel
+                        </button>
+                        <button class="btn btn-fantasy" id="challenges-btn">
+                            <i class="fas fa-trophy"></i> Challenges
+                        </button>
+                        <button class="btn btn-ocean" id="marketplace-btn">
+                            <i class="fas fa-store"></i> Marketplace
+                        </button>
+                        <button class="btn btn-poop" id="poop-btn">
+                            <i class="fas fa-poop"></i> Poop Crafting
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- File input for loading games -->
+    <input type="file" id="file-input" class="file-input" accept=".json">
+
+    <!-- Poop Crafting Modal -->
+    <div class="modal" id="poop-modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2><i class="fas fa-poop"></i> Poop Crafting</h2>
+                <button class="close-btn" id="close-poop">&times;</button>
+            </div>
+            <div class="modal-body">
+                <p>Create poop-related elements and discover the wonderful world of scatological crafting!</p>
+                <div class="elements-grid" id="poop-elements-grid">
+                    <!-- Poop elements will be dynamically added here -->
+                </div>
+                <div class="crafting-area">
+                    <div class="slot" id="poop-slot1">
+                        <i class="fas fa-question"></i>
+                        <span>Drag element here</span>
+                    </div>
+                    <button class="combine-btn btn-poop" id="poop-combine-btn">
+                        <i class="fas fa-plus"></i>
+                    </button>
+                    <div class="slot" id="poop-slot2">
+                        <i class="fas fa-question"></i>
+                        <span>Drag element here</span>
+                    </div>
+                </div>
+                <div class="result">
+                    <h3>Result:</h3>
+                    <div class="result-element" id="poop-result-element">
+                        <i class="fas fa-question"></i>
+                        <span>Combine elements to create poop!</span>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-success" id="close-poop-btn">Close</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Worlds Modal -->
+    <div class="modal" id="worlds-modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2><i class="fas fa-globe"></i> World Travel</h2>
+                <button class="close-btn" id="close-worlds">&times;</button>
+            </div>
+            <div class="modal-body">
+                <p>Travel to different worlds to discover unique elements and crafting recipes!</p>
+                <div class="pet-collection" id="worlds-collection">
+                    <!-- Worlds will be dynamically added here -->
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-success" id="close-worlds-btn">Close</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Accounts Modal -->
+    <div class="modal" id="accounts-modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2><i class="fas fa-users"></i> Account Management</h2>
+                <button class="close-btn" id="close-accounts">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div class="form-group">
+                    <label for="new-account-name">Create New Account</label>
+                    <input type="text" id="new-account-name" placeholder="Enter account name">
+                </div>
+                <div class="form-group">
+                    <label for="new-account-password">Password (optional)</label>
+                    <input type="password" id="new-account-password" placeholder="Enter password">
+                    <div class="password-strength" id="password-strength">
+                        <div class="password-strength-bar"></div>
+                    </div>
+                    <small style="opacity: 0.7;">Common passwords like "password", "123456", etc. will be rejected</small>
+                </div>
+                <button class="btn btn-success" id="create-account-btn" style="width: 100%; margin-bottom: 1.5rem;">
+                    <i class="fas fa-user-plus"></i> Create Account
+                </button>
+
+                <h3 style="margin-bottom: 1rem;">Switch Account</h3>
+                <div class="account-list" id="account-list">
+                    <!-- Accounts will be dynamically added here -->
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-success" id="close-accounts-btn">Close</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Pets Modal -->
+    <div class="modal" id="pets-modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2><i class="fas fa-paw"></i> Your Pets</h2>
+                <button class="close-btn" id="close-pets">&times;</button>
+            </div>
+            <div class="modal-body">
+                <p>You start with a Dog and get a Parrot for free as a new user!</p>
+                <div class="pet-collection" id="pet-collection">
+                    <!-- Pet cards will be dynamically added here -->
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-success" id="close-pets-btn">Close</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Recipes Modal -->
+    <div class="modal" id="recipes-modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2><i class="fas fa-book"></i> Crafting Recipes</h2>
+                <button class="close-btn" id="close-recipes">&times;</button>
+            </div>
+            <div class="modal-body">
+                <p>Click on a recipe to auto-fill the crafting slots.</p>
+                <div class="recipe-list" id="recipe-list">
+                    <!-- Recipe cards will be dynamically added here -->
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-success" id="close-recipes-btn">Close</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Quick Craft Modal -->
+    <div class="modal" id="quick-craft-modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2><i class="fas fa-bolt"></i> Quick Craft</h2>
+                <button class="close-btn" id="close-quick-craft">&times;</button>
+            </div>
+            <div class="modal-body">
+                <p>Quickly craft common items with one click.</p>
+                <div class="quick-craft-options" id="quick-craft-options">
+                    <!-- Quick craft options will be dynamically added here -->
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-success" id="close-quick-craft-btn">Close</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Studio Crafting Modal -->
+    <div class="modal" id="studio-modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2><i class="fas fa-film"></i> Studio Crafting</h2>
+                <button class="close-btn" id="close-studio">&times;</button>
+            </div>
+            <div class="modal-body">
+                <p>Create studios by combining specific elements!</p>
+                <div class="elements-grid" id="studio-elements-grid">
+                    <!-- Studio elements will be dynamically added here -->
+                </div>
+                <div class="crafting-area">
+                    <div class="slot" id="studio-slot1">
+                        <i class="fas fa-question"></i>
+                        <span>Drag element here</span>
+                    </div>
+                    <button class="combine-btn btn-studio" id="studio-combine-btn">
+                        <i class="fas fa-plus"></i>
+                    </button>
+                    <div class="slot" id="studio-slot2">
+                        <i class="fas fa-question"></i>
+                        <span>Drag element here</span>
+                    </div>
+                </div>
+                <div class="result">
+                    <h3>Result:</h3>
+                    <div class="result-element" id="studio-result-element">
+                        <i class="fas fa-question"></i>
+                        <span>Combine elements to create studios!</span>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-success" id="close-studio-btn">Close</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Challenges Modal -->
+    <div class="modal" id="challenges-modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2><i class="fas fa-trophy"></i> Daily Challenges</h2>
+                <button class="close-btn" id="close-challenges">&times;</button>
+            </div>
+            <div class="modal-body">
+                <p>Complete challenges to earn rewards and unlock new features!</p>
+                <div class="pet-collection">
+                    <div class="pet-card">
+                        <i class="fas fa-seedling"></i>
+                        <span>Create 5 Plants</span>
+                        <div class="stat-label">Reward: 50 XP</div>
+                        <div class="stat-label">Progress: 2/5</div>
+                    </div>
+                    <div class="pet-card">
+                        <i class="fas fa-fire"></i>
+                        <span>Combine Fire 10 Times</span>
+                        <div class="stat-label">Reward: Fire Elemental Pet</div>
+                        <div class="stat-label">Progress: 7/10</div>
+                    </div>
+                    <div class="pet-card">
+                        <i class="fas fa-dog"></i>
+                        <span>Discover 3 Pet Types</span>
+                        <div class="stat-label">Reward: Pet House</div>
+                        <div class="stat-label">Progress: 2/3</div>
+                    </div>
+                    <div class="pet-card">
+                        <i class="fas fa-poop"></i>
+                        <span>Craft Poop Element</span>
+                        <div class="stat-label">Reward: 100 Coins</div>
+                        <div class="stat-label">Progress: 0/1</div>
+                    </div>
+                    <div class="pet-card locked">
+                        <i class="fas fa-gem"></i>
+                        <span>Craft a Legendary Item</span>
+                        <div class="stat-label">Locked - Reach Level 10</div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-success" id="close-challenges-btn">Close</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Marketplace Modal -->
+    <div class="modal" id="marketplace-modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2><i class="fas fa-store"></i> Element Marketplace</h2>
+                <button class="close-btn" id="close-marketplace">&times;</button>
+            </div>
+            <div class="modal-body">
+                <p>Trade elements with other players or purchase rare items!</p>
+                <div class="pet-collection" id="marketplace-items">
+                    <!-- Marketplace items will be dynamically added here -->
+                </div>
+                <div style="margin-top: 2rem; text-align: center;">
+                    <h3>Your Balance: <span style="color: var(--warning);" id="coins-balance">1,250</span> Coins</h3>
+                    <button class="btn btn-warning" style="margin-top: 1rem;">
+                        <i class="fas fa-coins"></i> Earn More Coins
+                    </button>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-success" id="close-marketplace-btn">Close</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Settings Modal -->
+    <div class="modal" id="settings-modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2><i class="fas fa-cog"></i> Game Settings</h2>
+                <button class="close-btn" id="close-settings">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div style="margin-bottom: 1.5rem;">
+                    <h3 style="margin-bottom: 0.8rem;">Sound & Music</h3>
+                    <div style="display: flex; align-items: center; gap: 1rem;">
+                        <span>Off</span>
+                        <div style="flex: 1; height: 8px; background: rgba(255,255,255,0.2); border-radius: 4px;">
+                            <div style="width: 70%; height: 100%; background: var(--accent); border-radius: 4px;"></div>
+                        </div>
+                        <span>On</span>
+                    </div>
+                </div>
+                
+                <div style="margin-bottom: 1.5rem;">
+                    <h3 style="margin-bottom: 0.8rem;">Difficulty</h3>
+                    <div style="display: flex; gap: 0.8rem;">
+                        <button class="btn" style="flex: 1;">Easy</button>
+                        <button class="btn btn-accent" style="flex: 1;">Normal</button>
+                        <button class="btn" style="flex: 1;">Hard</button>
+                    </div>
+                </div>
+                
+                <div style="margin-bottom: 1.5rem;">
+                    <h3 style="margin-bottom: 0.8rem;">Theme</h3>
+                    <div style="display: flex; gap: 0.8rem;">
+                        <div style="width: 40px; height: 40px; border-radius: 6px; background: linear-gradient(135deg, #4a00e0, #8e2de2); cursor: pointer; border: 2px solid white;"></div>
+                        <div style="width: 40px; height: 40px; border-radius: 6px; background: linear-gradient(135deg, #ff6b6b, #ff8e8e); cursor: pointer;"></div>
+                        <div style="width: 40px; height: 40px; border-radius: 6px; background: linear-gradient(135deg, #00d2b8, #00b894); cursor: pointer;"></div>
+                        <div style="width: 40px; height: 40px; border-radius: 6px; background: linear-gradient(135deg, #ff9e64, #ff7e5f); cursor: pointer;"></div>
+                    </div>
+                </div>
+
+                <div style="margin-bottom: 1.5rem;">
+                    <h3 style="margin-bottom: 0.8rem;">Gameplay Options</h3>
+                    <div style="display: flex; flex-direction: column; gap: 1rem;">
+                        <label style="display: flex; align-items: center; gap: 0.5rem;">
+                            <input type="checkbox" checked> Enable animations
+                        </label>
+                        <label style="display: flex; align-items: center; gap: 0.5rem;">
+                            <input type="checkbox" checked> Show tooltips
+                        </label>
+                        <label style="display: flex; align-items: center; gap: 0.5rem;">
+                            <input type="checkbox"> Auto-save every 5 minutes
+                        </label>
+                        <label style="display: flex; align-items: center; gap: 0.5rem;">
+                            <input type="checkbox" checked> Notifications for new elements
+                        </label>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn" id="cancel-settings">Cancel</button>
+                <button class="btn btn-success" id="save-settings">Save Changes</button>
+            </div>
+        </div>
+    </div>
+
+    <footer>
+        <div class="footer-content">
+            <div class="copyright">
+                &copy; 2023 Infinite Craft Ultimate. All rights reserved.
+            </div>
+            <div class="footer-links">
+                <a href="#"><i class="fas fa-shield-alt"></i> Privacy Policy</a>
+                <a href="#"><i class="fas fa-file-contract"></i> Terms of Service</a>
+                <a href="#"><i class="fas fa-envelope"></i> Contact Us</a>
+                <a href="#"><i class="fas fa-question-circle"></i> Help & Support</a>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Game Data
+        const elementsData = [
+            { id: 'water', name: 'Water', icon: 'fas fa-tint', type: 'basic' },
+            { id: 'fire', name: 'Fire', icon: 'fas fa-fire', type: 'basic' },
+            { id: 'earth', name: 'Earth', icon: 'fas fa-mountain', type: 'basic' },
+            { id: 'wind', name: 'Wind', icon: 'fas fa-wind', type: 'basic' },
+            { id: 'dog', name: 'Dog', icon: 'fas fa-dog', type: 'pet' },
+            { id: 'parrot', name: 'Parrot', icon: 'fas fa-kiwi-bird', type: 'pet' },
+            { id: 'energy', name: 'Energy', icon: 'fas fa-bolt', type: 'basic' },
+            { id: 'life', name: 'Life', icon: 'fas fa-leaf', type: 'basic' },
+            { id: 'crystal', name: 'Crystal', icon: 'fas fa-gem', type: 'mystical' },
+            { id: 'metal', name: 'Metal', icon: 'fas fa-cog', type: 'tech' }
+        ];
+
+        // Worlds Data
+        const worldsData = [
+            { id: 'earth', name: 'Earth World', icon: 'fas fa-mountain', unlocked: true, elements: ['water', 'fire', 'earth', 'wind', 'dog', 'parrot', 'energy', 'life'] },
+            { id: 'ocean', name: 'Ocean World', icon: 'fas fa-water', unlocked: false, elements: ['water', 'fish', 'coral', 'whale', 'shark', 'octopus'] },
+            { id: 'space', name: 'Space World', icon: 'fas fa-rocket', unlocked: false, elements: ['star', 'planet', 'comet', 'alien', 'spaceship', 'blackhole'] },
+            { id: 'fantasy', name: 'Fantasy World', icon: 'fas fa-dragon', unlocked: false, elements: ['dragon', 'unicorn', 'wizard', 'castle', 'sword', 'magic'] },
+            { id: 'tech', name: 'Tech World', icon: 'fas fa-robot', unlocked: false, elements: ['robot', 'computer', 'ai', 'cyborg', 'hologram', 'nanobot'] },
+            { id: 'mystical', name: 'Mystical World', icon: 'fas fa-ghost', unlocked: false, elements: ['spirit', 'phoenix', 'golem', 'fairy', 'vampire', 'werewolf'] },
+            { id: 'poop', name: 'Poop World', icon: 'fas fa-poop', unlocked: false, elements: ['poop', 'fertilizer', 'compost', 'sewage', 'fly', 'methane'] }
+        ];
+
+        // Marketplace Items
+        const marketplaceItems = [
+            { id: 'dragonegg', name: 'Dragon Egg', icon: 'fas fa-dragon', price: 500, type: 'pet' },
+            { id: 'aicore', name: 'AI Core', icon: 'fas fa-robot', price: 300, type: 'tech' },
+            { id: 'royalcrown', name: 'Royal Crown', icon: 'fas fa-crown', price: 1000, type: 'fantasy' },
+            { id: 'goldenpoop', name: 'Golden Poop', icon: 'fas fa-poop', price: 2000, type: 'poop' },
+            { id: 'infinitystone', name: 'Infinity Stone', icon: 'fas fa-infinity', price: 5000, type: 'mystical' },
+            { id: 'mermaidscale', name: 'Mermaid Scale', icon: 'fas fa-fish', price: 800, type: 'ocean' }
+        ];
+
+        // Common passwords that will be rejected
+        const commonPasswords = [
+            'password', '123456', '12345678', '1234', 'qwerty', 'admin', 'letmein',
+            'welcome', 'monkey', 'abc123', 'password1', '12345', 'football', '1234567'
+        ];
+
+        // Expanded element combinations
+        const elementCombinations = {
+            // Basic combinations
+            'water+fire': { id: 'steam', name: 'Steam', icon: 'fas fa-cloud', type: 'basic' },
+            'water+earth': { id: 'mud', name: 'Mud', icon: 'fas fa-square', type: 'basic' },
+            'fire+earth': { id: 'lava', name: 'Lava', icon: 'fas fa-volcano', type: 'basic' },
+            'wind+water': { id: 'storm', name: 'Storm', icon: 'fas fa-cloud-rain', type: 'basic' },
+            'life+earth': { id: 'plant', name: 'Plant', icon: 'fas fa-seedling', type: 'basic' },
+            'plant+water': { id: 'tree', name: 'Tree', icon: 'fas fa-tree', type: 'basic' },
+            'tree+fire': { id: 'charcoal', name: 'Charcoal', icon: 'fas fa-square', type: 'basic' },
+            'tree+wind': { id: 'leaf', name: 'Leaf', icon: 'fas fa-leaf', type: 'basic' },
+            
+            // Pet combinations
+            'dog+parrot': { id: 'zoo', name: 'Zoo', icon: 'fas fa-paw', type: 'pet' },
+            'dog+water': { id: 'wetdog', name: 'Wet Dog', icon: 'fas fa-dog', type: 'pet' },
+            'parrot+wind': { id: 'flyingparrot', name: 'Flying Parrot', icon: 'fas fa-kiwi-bird', type: 'pet' },
+            'dog+fire': { id: 'hotdog', name: 'Hot Dog', icon: 'fas fa-hotdog', type: 'food' },
+            'parrot+tree': { id: 'birdhouse', name: 'Birdhouse', icon: 'fas fa-home', type: 'basic' },
+            
+            // Studio combinations
+            'dog+earth': { id: 'demstudio', name: 'Dem Studio', icon: 'fas fa-film', type: 'studio' },
+            'dog+life': { id: '14592studios', name: '14592 Studios', icon: 'fas fa-film', type: 'studio' },
+            
+            // Food combinations
+            'plant+fire': { id: 'grilledplant', name: 'Grilled Plant', icon: 'fas fa-utensils', type: 'food' },
+            'water+plant': { id: 'tea', name: 'Tea', icon: 'fas fa-mug-hot', type: 'food' },
+            'earth+fire': { id: 'clay', name: 'Clay', icon: 'fas fa-square', type: 'basic' },
+            'clay+fire': { id: 'pottery', name: 'Pottery', icon: 'fas fa-vase', type: 'basic' },
+            
+            // Technology combinations
+            'energy+metal': { id: 'battery', name: 'Battery', icon: 'fas fa-battery-full', type: 'tech' },
+            'energy+water': { id: 'electricfish', name: 'Electric Fish', icon: 'fas fa-fish', type: 'tech' },
+            'energy+wind': { id: 'windturbine', name: 'Wind Turbine', icon: 'fas fa-fan', type: 'tech' },
+            
+            // Mystical combinations
+            'energy+life': { id: 'spirit', name: 'Spirit', icon: 'fas fa-ghost', type: 'mystical' },
+            'fire+spirit': { id: 'phoenix', name: 'Phoenix', icon: 'fas fa-fire', type: 'mystical' },
+            'water+spirit': { id: 'mermaid', name: 'Mermaid', icon: 'fas fa-fish', type: 'mystical' },
+            'earth+spirit': { id: 'golem', name: 'Golem', icon: 'fas fa-mountain', type: 'mystical' },
+            
+            // Poop combinations
+            'earth+mud': { id: 'poop', name: 'Poop', icon: 'fas fa-poop', type: 'poop' },
+            'dog+poop': { id: 'dogpoop', name: 'Dog Poop', icon: 'fas fa-poop', type: 'poop' },
+            'poop+fire': { id: 'ash', name: 'Ash', icon: 'fas fa-fire', type: 'basic' },
+            'poop+plant': { id: 'fertilizer', name: 'Fertilizer', icon: 'fas fa-seedling', type: 'basic' },
+            'poop+water': { id: 'sewage', name: 'Sewage', icon: 'fas fa-tint', type: 'basic' },
+            'poop+poop': { id: 'poopmountain', name: 'Poop Mountain', icon: 'fas fa-mountain', type: 'poop' },
+            'poop+life': { id: 'fly', name: 'Fly', icon: 'fas fa-bug', type: 'pet' },
+            'poop+energy': { id: 'methane', name: 'Methane', icon: 'fas fa-wind', type: 'basic' },
+            
+            // Triple combinations
+            'water+fire+earth': { id: 'geyser', name: 'Geyser', icon: 'fas fa-water', type: 'basic' },
+            'water+wind+energy': { id: 'hurricane', name: 'Hurricane', icon: 'fas fa-wind', type: 'basic' },
+            'dog+parrot+life': { id: 'petparadise', name: 'Pet Paradise', icon: 'fas fa-paw', type: 'pet' },
+            'dog+earth+life': { id: 'ecosystem', name: 'Ecosystem', icon: 'fas fa-leaf', type: 'basic' },
+            'earth+mud+life': { id: 'compost', name: 'Compost', icon: 'fas fa-recycle', type: 'basic' },
+            
+            // Ocean combinations
+            'water+water': { id: 'ocean', name: 'Ocean', icon: 'fas fa-water', type: 'ocean' },
+            'ocean+fire': { id: 'steamocean', name: 'Steam Ocean', icon: 'fas fa-water', type: 'ocean' },
+            
+            // Space combinations
+            'energy+energy': { id: 'star', name: 'Star', icon: 'fas fa-star', type: 'space' },
+            'star+star': { id: 'galaxy', name: 'Galaxy', icon: 'fas fa-globe', type: 'space' },
+            
+            // Fantasy combinations
+            'spirit+tree': { id: 'ent', name: 'Ent', icon: 'fas fa-tree', type: 'fantasy' },
+            'fire+dragon': { id: 'dragon', name: 'Dragon', icon: 'fas fa-dragon', type: 'fantasy' }
+        };
+
+        // Game State
+        let gameState = {
+            elements: [...elementsData],
+            discoveries: [],
+            combinations: 0,
+            pets: ['dog', 'parrot'],
+            mystical: [],
+            studios: [],
+            poop: [],
+            worlds: ['earth'],
+            coins: 1250,
+            currentWorld: 'earth',
+            unlockedWorlds: ['earth']
+        };
+
+        // Account System
+        let accounts = {
+            'Guest': {
+                password: null,
+                gameState: {...gameState}
+            }
+        };
+        
+        let currentAccount = 'Guest';
+        let tripleCraftMode = false;
+        let autoCraftMode = false;
+
+        // DOM Elements
+        const elementsGrid = document.getElementById('elements-grid');
+        const discoveriesList = document.getElementById('discoveries-list');
+        const slot1 = document.getElementById('slot1');
+        const slot2 = document.getElementById('slot2');
+        const slot3 = document.getElementById('slot3');
+        const combineBtn = document.getElementById('combine-btn');
+        const tripleCombineBtn = document.getElementById('triple-combine-btn');
+        const resultElement = document.getElementById('result-element');
+        const newElementNotice = document.getElementById('new-element-notice');
+        const elementsCount = document.getElementById('elements-count');
+        const combinationsCount = document.getElementById('combinations-count');
+        const petsCount = document.getElementById('pets-count');
+        const mysticalCount = document.getElementById('mystical-count');
+        const studiosCount = document.getElementById('studios-count');
+        const worldsCount = document.getElementById('worlds-count');
+        const poopCount = document.getElementById('poop-count');
+        const coinsCount = document.getElementById('coins-count');
+        const currentAccountElement = document.getElementById('current-account');
+        const fileInput = document.getElementById('file-input');
+        const autoCraftSuggestions = document.getElementById('auto-craft-suggestions');
+        const suggestionsList = document.getElementById('suggestions-list');
+
+        // Modal Elements
+        const poopModal = document.getElementById('poop-modal');
+        const worldsModal = document.getElementById('worlds-modal');
+        const accountsModal = document.getElementById('accounts-modal');
+        const petsModal = document.getElementById('pets-modal');
+        const recipesModal = document.getElementById('recipes-modal');
+        const quickCraftModal = document.getElementById('quick-craft-modal');
+        const studioModal = document.getElementById('studio-modal');
+        const challengesModal = document.getElementById('challenges-modal');
+        const marketplaceModal = document.getElementById('marketplace-modal');
+        const settingsModal = document.getElementById('settings-modal');
+
+        // Initialize the game
+        function initGame() {
+            renderElements();
+            updateStats();
+            updateAccountDisplay();
+            
+            // Set up event listeners for modals
+            setupModalListeners();
+            
+            // Set up crafting functionality
+            setupCrafting();
+            
+            // Set up account functionality
+            setupAccountSystem();
+            
+            // Set up category filtering
+            setupCategoryFiltering();
+            
+            // Set up file handling
+            setupFileHandling();
+        }
+
+        // Render elements in the crafting grid
+        function renderElements() {
+            elementsGrid.innerHTML = '';
+            
+            // Get current world's elements
+            const currentWorld = worldsData.find(w => w.id === gameState.currentWorld);
+            const worldElements = currentWorld ? currentWorld.elements : [];
+            
+            gameState.elements.forEach(element => {
+                // Only show elements available in current world
+                if (worldElements.includes(element.id) || worldElements.length === 0) {
+                    const elementDiv = document.createElement('div');
+                    elementDiv.className = `element ${element.type}-element`;
+                    elementDiv.setAttribute('data-element', element.id);
+                    elementDiv.setAttribute('data-type', element.type);
+                    elementDiv.setAttribute('draggable', 'true');
+                    
+                    elementDiv.innerHTML = `
+                        <i class="${element.icon}"></i>
+                        <span>${element.name}</span>
+                        ${element.type !== 'basic' ? `<div class="element-badge ${element.type}-badge">${element.type === 'pet' ? 'Pet' : element.type === 'mystical' ? 'Mystic' : element.type === 'studio' ? 'Studio' : element.type === 'poop' ? 'Poop' : element.type}</div>` : ''}
+                    `;
+                    
+                    elementsGrid.appendChild(elementDiv);
+                }
+            });
+        }
+
+        // Update game statistics
+        function updateStats() {
+            elementsCount.textContent = gameState.elements.length;
+            combinationsCount.textContent = gameState.combinations;
+            petsCount.textContent = gameState.pets.length;
+            mysticalCount.textContent = gameState.mystical.length;
+            studiosCount.textContent = gameState.studios.length;
+            worldsCount.textContent = gameState.unlockedWorlds.length;
+            poopCount.textContent = gameState.poop.length;
+            coinsCount.textContent = gameState.coins;
+        }
+
+        // Update account display
+        function updateAccountDisplay() {
+            currentAccountElement.textContent = currentAccount;
+        }
+
+        // Set up modal functionality
+        function setupModalListeners() {
+            // Poop modal
+            document.getElementById('poop-btn').addEventListener('click', () => {
+                showPoopModal();
+                poopModal.style.display = 'flex';
+            });
+            
+            document.getElementById('close-poop').addEventListener('click', () => {
+                poopModal.style.display = 'none';
+            });
+            
+            document.getElementById('close-poop-btn').addEventListener('click', () => {
+                poopModal.style.display = 'none';
+            });
+            
+            // Worlds modal
+            document.getElementById('worlds-btn').addEventListener('click', () => {
+                showWorldsModal();
+                worldsModal.style.display = 'flex';
+            });
+            
+            document.getElementById('close-worlds').addEventListener('click', () => {
+                worldsModal.style.display = 'none';
+            });
+            
+            document.getElementById('close-worlds-btn').addEventListener('click', () => {
+                worldsModal.style.display = 'none';
+            });
+            
+            // Accounts modal
+            document.getElementById('accounts-btn').addEventListener('click', () => {
+                showAccountsModal();
+                accountsModal.style.display = 'flex';
+            });
+            
+            document.getElementById('close-accounts').addEventListener('click', () => {
+                accountsModal.style.display = 'none';
+            });
+            
+            document.getElementById('close-accounts-btn').addEventListener('click', () => {
+                accountsModal.style.display = 'none';
+            });
+            
+            // Switch account button
+            document.getElementById('switch-account-btn').addEventListener('click', () => {
+                showAccountsModal();
+                accountsModal.style.display = 'flex';
+            });
+            
+            // Pets modal
+            document.getElementById('pets-btn').addEventListener('click', () => {
+                showPetsModal();
+                petsModal.style.display = 'flex';
+            });
+            
+            document.getElementById('close-pets').addEventListener('click', () => {
+                petsModal.style.display = 'none';
+            });
+            
+            document.getElementById('close-pets-btn').addEventListener('click', () => {
+                petsModal.style.display = 'none';
+            });
+            
+            // Recipes modal
+            document.getElementById('recipes-btn').addEventListener('click', () => {
+                showRecipesModal();
+                recipesModal.style.display = 'flex';
+            });
+            
+            document.getElementById('close-recipes').addEventListener('click', () => {
+                recipesModal.style.display = 'none';
+            });
+            
+            document.getElementById('close-recipes-btn').addEventListener('click', () => {
+                recipesModal.style.display = 'none';
+            });
+            
+            // Quick Craft modal
+            document.getElementById('quick-craft-btn').addEventListener('click', () => {
+                showQuickCraftModal();
+                quickCraftModal.style.display = 'flex';
+            });
+            
+            document.getElementById('close-quick-craft').addEventListener('click', () => {
+                quickCraftModal.style.display = 'none';
+            });
+            
+            document.getElementById('close-quick-craft-btn').addEventListener('click', () => {
+                quickCraftModal.style.display = 'none';
+            });
+            
+            // Studio modal
+            document.getElementById('studio-btn').addEventListener('click', () => {
+                showStudioModal();
+                studioModal.style.display = 'flex';
+            });
+            
+            document.getElementById('close-studio').addEventListener('click', () => {
+                studioModal.style.display = 'none';
+            });
+            
+            document.getElementById('close-studio-btn').addEventListener('click', () => {
+                studioModal.style.display = 'none';
+            });
+            
+            // Challenges modal
+            document.getElementById('challenges-btn').addEventListener('click', () => {
+                challengesModal.style.display = 'flex';
+            });
+            
+            document.getElementById('close-challenges').addEventListener('click', () => {
+                challengesModal.style.display = 'none';
+            });
+            
+            document.getElementById('close-challenges-btn').addEventListener('click', () => {
+                challengesModal.style.display = 'none';
+            });
+            
+            // Marketplace modal
+            document.getElementById('marketplace-btn').addEventListener('click', () => {
+                showMarketplaceModal();
+                marketplaceModal.style.display = 'flex';
+            });
+            
+            document.getElementById('close-marketplace').addEventListener('click', () => {
+                marketplaceModal.style.display = 'none';
+            });
+            
+            document.getElementById('close-marketplace-btn').addEventListener('click', () => {
+                marketplaceModal.style.display = 'none';
+            });
+            
+            // Settings modal
+            document.getElementById('settings-btn').addEventListener('click', () => {
+                settingsModal.style.display = 'flex';
+            });
+            
+            document.getElementById('close-settings').addEventListener('click', () => {
+                settingsModal.style.display = 'none';
+            });
+            
+            document.getElementById('cancel-settings').addEventListener('click', () => {
+                settingsModal.style.display = 'none';
+            });
+            
+            document.getElementById('save-settings').addEventListener('click', () => {
+                settingsModal.style.display = 'none';
+                alert('Settings saved successfully!');
+            });
+            
+            // Auto Craft button
+            document.getElementById('auto-craft-btn').addEventListener('click', () => {
+                toggleAutoCraft();
+            });
+            
+            // Triple Craft button
+            document.getElementById('triple-craft-btn').addEventListener('click', () => {
+                toggleTripleCraft();
+            });
+            
+            // Close modals when clicking outside
+            window.addEventListener('click', (e) => {
+                if (e.target === poopModal) poopModal.style.display = 'none';
+                if (e.target === worldsModal) worldsModal.style.display = 'none';
+                if (e.target === accountsModal) accountsModal.style.display = 'none';
+                if (e.target === petsModal) petsModal.style.display = 'none';
+                if (e.target === recipesModal) recipesModal.style.display = 'none';
+                if (e.target === quickCraftModal) quickCraftModal.style.display = 'none';
+                if (e.target === studioModal) studioModal.style.display = 'none';
+                if (e.target === challengesModal) challengesModal.style.display = 'none';
+                if (e.target === marketplaceModal) marketplaceModal.style.display = 'none';
+                if (e.target === settingsModal) settingsModal.style.display = 'none';
+            });
+        }
+
+        // Set up crafting functionality
+        function setupCrafting() {
+            let selectedElement1 = null;
+            let selectedElement2 = null;
+            let selectedElement3 = null;
+            
+            // Element selection
+            elementsGrid.addEventListener('click', (e) => {
+                const element = e.target.closest('.element');
+                if (element) {
+                    const elementId = element.getAttribute('data-element');
+                    const elementData = gameState.elements.find(el => el.id === elementId);
+                    
+                    if (!selectedElement1) {
+                        selectedElement1 = elementData;
+                        slot1.innerHTML = `<i class="${elementData.icon}"></i><span>${elementData.name}</span>`;
+                        slot1.classList.add('active');
+                    } else if (!selectedElement2) {
+                        selectedElement2 = elementData;
+                        slot2.innerHTML = `<i class="${elementData.icon}"></i><span>${elementData.name}</span>`;
+                        slot2.classList.add('active');
+                    } else if (tripleCraftMode && !selectedElement3) {
+                        selectedElement3 = elementData;
+                        slot3.innerHTML = `<i class="${elementData.icon}"></i><span>${elementData.name}</span>`;
+                        slot3.classList.add('active');
+                    }
+                }
+            });
+            
+            // Combine elements (2 elements)
+            combineBtn.addEventListener('click', () => {
+                if (selectedElement1 && selectedElement2) {
+                    const result = findCombination(selectedElement1.id, selectedElement2.id);
+                    
+                    if (result) {
+                        handleCraftingResult(result, selectedElement1, selectedElement2);
+                    } else {
+                        // Generate a random element if no predefined combination exists
+                        const randomElement = generateRandomElement(selectedElement1, selectedElement2);
+                        handleCraftingResult(randomElement, selectedElement1, selectedElement2);
+                    }
+                    
+                    // Reset slots after a delay
+                    setTimeout(() => {
+                        selectedElement1 = null;
+                        selectedElement2 = null;
+                        selectedElement3 = null;
+                        resetSlots();
+                    }, 2000);
+                } else {
+                    alert('Please select two elements to combine!');
+                }
+            });
+            
+            // Triple combine elements (3 elements)
+            tripleCombineBtn.addEventListener('click', () => {
+                if (selectedElement1 && selectedElement2 && selectedElement3) {
+                    const result = findTripleCombination(selectedElement1.id, selectedElement2.id, selectedElement3.id);
+                    
+                    if (result) {
+                        handleCraftingResult(result, selectedElement1, selectedElement2, selectedElement3);
+                    } else {
+                        // Generate a random element if no predefined combination exists
+                        const randomElement = generateRandomElement(selectedElement1, selectedElement2, selectedElement3);
+                        handleCraftingResult(randomElement, selectedElement1, selectedElement2, selectedElement3);
+                    }
+                    
+                    // Reset slots after a delay
+                    setTimeout(() => {
+                        selectedElement1 = null;
+                        selectedElement2 = null;
+                        selectedElement3 = null;
+                        resetSlots();
+                    }, 2000);
+                } else {
+                    alert('Please select three elements to combine!');
+                }
+            });
+            
+            // New game button
+            document.getElementById('new-game-btn').addEventListener('click', () => {
+                if (confirm('Are you sure you want to start a new game? Your progress will be lost.')) {
+                    // Reset game state but keep pets
+                    gameState = {
+                        elements: [...elementsData],
+                        discoveries: [],
+                        combinations: 0,
+                        pets: ['dog', 'parrot'],
+                        mystical: [],
+                        studios: [],
+                        poop: [],
+                        worlds: ['earth'],
+                        coins: 1250,
+                        currentWorld: 'earth',
+                        unlockedWorlds: ['earth']
+                    };
+                    
+                    // Save to current account
+                    accounts[currentAccount].gameState = {...gameState};
+                    
+                    renderElements();
+                    updateDiscoveries();
+                    updateStats();
+                    
+                    selectedElement1 = null;
+                    selectedElement2 = null;
+                    selectedElement3 = null;
+                    resetSlots();
+                    resultElement.innerHTML = '<i class="fas fa-question"></i><span>Combine elements to discover new ones!</span>';
+                    
+                    alert('New game started!');
+                }
+            });
+            
+            // Save game
+            document.getElementById('save-btn').addEventListener('click', () => {
+                saveGameToFile();
+            });
+            
+            // Load game
+            document.getElementById('load-btn').addEventListener('click', () => {
+                fileInput.click();
+            });
+        }
+
+        // Set up account system
+        function setupAccountSystem() {
+            // Create account button
+            document.getElementById('create-account-btn').addEventListener('click', () => {
+                const accountName = document.getElementById('new-account-name').value.trim();
+                const password = document.getElementById('new-account-password').value;
+                
+                if (!accountName) {
+                    alert('Please enter an account name!');
+                    return;
+                }
+                
+                if (accounts[accountName]) {
+                    alert('An account with this name already exists!');
+                    return;
+                }
+                
+                // Check if password is too common
+                if (password && commonPasswords.includes(password.toLowerCase())) {
+                    alert('This password is too common. Please choose a more secure password.');
+                    return;
+                }
+                
+                // Create new account
+                accounts[accountName] = {
+                    password: password || null,
+                    gameState: {
+                        elements: [...elementsData],
+                        discoveries: [],
+                        combinations: 0,
+                        pets: ['dog', 'parrot'],
+                        mystical: [],
+                        studios: [],
+                        poop: [],
+                        worlds: ['earth'],
+                        coins: 1250,
+                        currentWorld: 'earth',
+                        unlockedWorlds: ['earth']
+                    }
+                };
+                
+                // Switch to the new account
+                switchAccount(accountName);
+                
+                // Clear form
+                document.getElementById('new-account-name').value = '';
+                document.getElementById('new-account-password').value = '';
+                document.getElementById('password-strength').className = 'password-strength';
+                
+                alert(`Account "${accountName}" created successfully!`);
+            });
+            
+            // Password strength indicator
+            document.getElementById('new-account-password').addEventListener('input', (e) => {
+                const password = e.target.value;
+                const strengthIndicator = document.getElementById('password-strength');
+                
+                if (password.length === 0) {
+                    strengthIndicator.className = 'password-strength';
+                } else if (password.length < 6 || commonPasswords.includes(password.toLowerCase())) {
+                    strengthIndicator.className = 'password-strength weak';
+                } else if (password.length < 10) {
+                    strengthIndicator.className = 'password-strength medium';
+                } else {
+                    strengthIndicator.className = 'password-strength strong';
+                }
+            });
+        }
+
+        // Set up category filtering
+        function setupCategoryFiltering() {
+            const categoryButtons = document.querySelectorAll('.category-btn');
+            
+            categoryButtons.forEach(button => {
+                button.addEventListener('click', () => {
+                    // Remove active class from all buttons
+                    categoryButtons.forEach(btn => btn.classList.remove('active'));
+                    // Add active class to clicked button
+                    button.classList.add('active');
+                    
+                    const category = button.getAttribute('data-category');
+                    filterElements(category);
+                });
+            });
+        }
+
+        // Set up file handling
+        function setupFileHandling() {
+            fileInput.addEventListener('change', (e) => {
+                const file = e.target.files[0];
+                if (file) {
+                    const reader = new FileReader();
+                    reader.onload = (event) => {
+                        try {
+                            const savedGame = JSON.parse(event.target.result);
+                            loadGameFromData(savedGame);
+                            alert('Game loaded successfully!');
+                        } catch (error) {
+                            alert('Error loading game file. Please make sure it is a valid save file.');
+                        }
+                    };
+                    reader.readAsText(file);
+                }
+                // Reset file input
+                fileInput.value = '';
+            });
+        }
+
+        // Filter elements by category
+        function filterElements(category) {
+            const elements = document.querySelectorAll('.element');
+            
+            elements.forEach(element => {
+                if (category === 'all') {
+                    element.style.display = 'block';
+                } else {
+                    const elementType = element.getAttribute('data-type');
+                    if (elementType === category) {
+                        element.style.display = 'block';
+                    } else {
+                        element.style.display = 'none';
+                    }
+                }
+            });
+        }
+
+        // Toggle triple craft mode
+        function toggleTripleCraft() {
+            tripleCraftMode = !tripleCraftMode;
+            
+            if (tripleCraftMode) {
+                slot3.style.display = 'flex';
+                tripleCombineBtn.style.display = 'flex';
+                document.getElementById('triple-craft-btn').innerHTML = '<i class="fas fa-undo"></i> Double Craft';
+                alert('Triple crafting activated! Select three elements to combine.');
+            } else {
+                slot3.style.display = 'none';
+                tripleCombineBtn.style.display = 'none';
+                document.getElementById('triple-craft-btn').innerHTML = '<i class="fas fa-magic"></i> Triple Craft';
+                alert('Double crafting activated! Select two elements to combine.');
+            }
+        }
+
+        // Toggle auto craft mode
+        function toggleAutoCraft() {
+            autoCraftMode = !autoCraftMode;
+            
+            if (autoCraftMode) {
+                document.getElementById('auto-craft-btn').innerHTML = '<i class="fas fa-robot"></i> Auto Craft ON';
+                autoCraftSuggestions.style.display = 'block';
+                generateAutoCraftSuggestions();
+                alert('Auto Craft activated! Suggestions will appear below.');
+            } else {
+                document.getElementById('auto-craft-btn').innerHTML = '<i class="fas fa-robot"></i> Auto Craft';
+                autoCraftSuggestions.style.display = 'none';
+                alert('Auto Craft deactivated.');
+            }
+        }
+
+        // Generate auto craft suggestions
+        function generateAutoCraftSuggestions() {
+            suggestionsList.innerHTML = '';
+            
+            // Find combinations that create new elements
+            const suggestions = [];
+            
+            for (const key in elementCombinations) {
+                const elements = key.split('+');
+                const result = elementCombinations[key];
+                
+                // Check if we have the ingredients but not the result
+                const hasIngredients = elements.every(el => 
+                    gameState.elements.some(e => e.id === el)
+                );
+                
+                const hasResult = gameState.elements.some(el => el.id === result.id);
+                
+                if (hasIngredients && !hasResult) {
+                    suggestions.push({
+                        elements: elements,
+                        result: result
+                    });
+                }
+            }
+            
+            // Show up to 5 suggestions
+            suggestions.slice(0, 5).forEach(suggestion => {
+                const suggestionDiv = document.createElement('div');
+                suggestionDiv.className = 'auto-craft-suggestion';
+                
+                const elementNames = suggestion.elements.map(el => {
+                    const element = gameState.elements.find(e => e.id === el);
+                    return element ? element.name : el;
+                }).join(' + ');
+                
+                suggestionDiv.innerHTML = `
+                    <div style="display: flex; align-items: center; justify-content: space-between;">
+                        <div>
+                            <strong>${suggestion.result.name}</strong>
+                            <div style="font-size: 0.9rem; opacity: 0.8;">${elementNames}</div>
+                        </div>
+                        <button class="btn btn-accent" style="padding: 0.5rem;">
+                            <i class="fas fa-plus"></i> Craft
+                        </button>
+                    </div>
+                `;
+                
+                suggestionDiv.querySelector('button').addEventListener('click', () => {
+                    // Auto-fill the crafting slots
+                    const element1 = document.querySelector(`[data-element="${suggestion.elements[0]}"]`);
+                    const element2 = document.querySelector(`[data-element="${suggestion.elements[1]}"]`);
+                    
+                    if (element1 && element2) {
+                        element1.click();
+                        setTimeout(() => {
+                            element2.click();
+                        }, 100);
+                        
+                        autoCraftSuggestions.style.display = 'none';
+                        autoCraftMode = false;
+                        document.getElementById('auto-craft-btn').innerHTML = '<i class="fas fa-robot"></i> Auto Craft';
+                    }
+                });
+                
+                suggestionsList.appendChild(suggestionDiv);
+            });
+            
+            if (suggestions.length === 0) {
+                suggestionsList.innerHTML = '<p>No new combinations available. Try discovering more elements!</p>';
+            }
+        }
+
+        // Reset crafting slots
+        function resetSlots() {
+            slot1.innerHTML = '<i class="fas fa-question"></i><span>Drag element here</span>';
+            slot2.innerHTML = '<i class="fas fa-question"></i><span>Drag element here</span>';
+            slot3.innerHTML = '<i class="fas fa-question"></i><span>Third element (triple)</span>';
+            slot1.classList.remove('active');
+            slot2.classList.remove('active');
+            slot3.classList.remove('active');
+        }
+
+        // Handle crafting result
+        function handleCraftingResult(result, element1, element2, element3 = null) {
+            // Check if this is a new discovery
+            const isNewDiscovery = !gameState.elements.some(el => el.id === result.id);
+            
+            // Update result display
+            resultElement.innerHTML = `<i class="${result.icon}"></i><span>${result.name}</span>`;
+            
+            // Add to discoveries
+            const discovery = {
+                element1: element1.name,
+                element2: element2.name,
+                element3: element3 ? element3.name : null,
+                result: result.name,
+                resultIcon: result.icon
+            };
+            
+            gameState.discoveries.unshift(discovery);
+            updateDiscoveries();
+            
+            // If it's a new element, add it to the collection
+            if (isNewDiscovery) {
+                gameState.elements.push(result);
+                renderElements();
+                newElementNotice.style.display = 'block';
+                
+                // Add to specific collections
+                if (result.type === 'pet' && !gameState.pets.includes(result.id)) {
+                    gameState.pets.push(result.id);
+                }
+                if (result.type === 'mystical' && !gameState.mystical.includes(result.id)) {
+                    gameState.mystical.push(result.id);
+                }
+                if (result.type === 'studio' && !gameState.studios.includes(result.id)) {
+                    gameState.studios.push(result.id);
+                }
+                if (result.type === 'poop' && !gameState.poop.includes(result.id)) {
+                    gameState.poop.push(result.id);
+                }
+                
+                // Award coins for new discovery
+                gameState.coins += 10;
+                
+                // Check for world unlocks
+                checkWorldUnlocks();
+                
+                setTimeout(() => {
+                    newElementNotice.style.display = 'none';
+                }, 3000);
+            }
+            
+            // Update stats
+            gameState.combinations++;
+            updateStats();
+            
+            // Regenerate auto craft suggestions if active
+            if (autoCraftMode) {
+                generateAutoCraftSuggestions();
+            }
+        }
+
+        // Check for world unlocks
+        function checkWorldUnlocks() {
+            // Ocean World - Discover 25 elements
+            if (gameState.elements.length >= 25 && !gameState.unlockedWorlds.includes('ocean')) {
+                gameState.unlockedWorlds.push('ocean');
+                alert('Ocean World unlocked! Travel to discover water-themed elements.');
+            }
+            
+            // Space World - Discover 50 elements
+            if (gameState.elements.length >= 50 && !gameState.unlockedWorlds.includes('space')) {
+                gameState.unlockedWorlds.push('space');
+                alert('Space World unlocked! Travel to discover cosmic elements.');
+            }
+            
+            // Fantasy World - Complete 10 challenges (simplified)
+            if (gameState.combinations >= 50 && !gameState.unlockedWorlds.includes('fantasy')) {
+                gameState.unlockedWorlds.push('fantasy');
+                alert('Fantasy World unlocked! Travel to discover magical elements.');
+            }
+            
+            // Tech World - Craft 5 tech elements
+            if (gameState.tech && gameState.tech.length >= 5 && !gameState.unlockedWorlds.includes('tech')) {
+                gameState.unlockedWorlds.push('tech');
+                alert('Tech World unlocked! Travel to discover technological elements.');
+            }
+            
+            // Mystical World - Discover all mystical elements
+            if (gameState.mystical && gameState.mystical.length >= 5 && !gameState.unlockedWorlds.includes('mystical')) {
+                gameState.unlockedWorlds.push('mystical');
+                alert('Mystical World unlocked! Travel to discover supernatural elements.');
+            }
+            
+            // Poop World - Discover 5 poop elements
+            if (gameState.poop && gameState.poop.length >= 5 && !gameState.unlockedWorlds.includes('poop')) {
+                gameState.unlockedWorlds.push('poop');
+                alert('Poop World unlocked! Travel to discover scatological elements.');
+            }
+        }
+
+        // Find combination between two elements
+        function findCombination(element1, element2) {
+            const key1 = `${element1}+${element2}`;
+            const key2 = `${element2}+${element1}`;
+            
+            return elementCombinations[key1] || elementCombinations[key2] || null;
+        }
+
+        // Find combination between three elements
+        function findTripleCombination(element1, element2, element3) {
+            const keys = [
+                `${element1}+${element2}+${element3}`,
+                `${element1}+${element3}+${element2}`,
+                `${element2}+${element1}+${element3}`,
+                `${element2}+${element3}+${element1}`,
+                `${element3}+${element1}+${element2}`,
+                `${element3}+${element2}+${element1}`
+            ];
+            
+            for (const key of keys) {
+                if (elementCombinations[key]) {
+                    return elementCombinations[key];
+                }
+            }
+            
+            return null;
+        }
+
+        // Generate a random element when no predefined combination exists
+        function generateRandomElement(element1, element2, element3 = null) {
+            const elementTypes = ['basic', 'pet', 'food', 'tech', 'mystical', 'ocean', 'space', 'fantasy', 'poop'];
+            const randomType = elementTypes[Math.floor(Math.random() * elementTypes.length)];
+            
+            const icons = {
+                basic: ['fas fa-cloud', 'fas fa-mountain', 'fas fa-water', 'fas fa-wind', 'fas fa-fire', 'fas fa-leaf'],
+                pet: ['fas fa-dog', 'fas fa-cat', 'fas fa-dragon', 'fas fa-kiwi-bird', 'fas fa-fish', 'fas fa-horse'],
+                food: ['fas fa-utensils', 'fas fa-apple-alt', 'fas fa-cheese', 'fas fa-bread-slice', 'fas fa-ice-cream'],
+                tech: ['fas fa-laptop', 'fas fa-mobile-alt', 'fas fa-robot', 'fas fa-satellite', 'fas fa-microchip'],
+                mystical: ['fas fa-hat-wizard', 'fas fa-ghost', 'fas fa-dragon', 'fas fa-gem', 'fas fa-scroll'],
+                ocean: ['fas fa-water', 'fas fa-fish', 'fas fa-anchor', 'fas fa-ship', 'fas fa-umbrella-beach'],
+                space: ['fas fa-rocket', 'fas fa-meteor', 'fas fa-satellite', 'fas fa-user-astronaut', 'fas fa-globe'],
+                fantasy: ['fas fa-dragon', 'fas fa-crown', 'fas fa-scroll', 'fas fa-hat-wizard', 'fas fa-shield-alt'],
+                poop: ['fas fa-poop', 'fas fa-biohazard', 'fas fa-recycle', 'fas fa-bug', 'fas fa-trash']
+            };
+            
+            const names = {
+                basic: ['Cloud', 'Mountain', 'River', 'Breeze', 'Flame', 'Forest'],
+                pet: ['Puppy', 'Kitten', 'Dragon', 'Bird', 'Fish', 'Pony'],
+                food: ['Meal', 'Fruit', 'Cheese', 'Bread', 'Dessert'],
+                tech: ['Computer', 'Phone', 'Robot', 'Satellite', 'Chip'],
+                mystical: ['Wizard', 'Ghost', 'Dragon', 'Crystal', 'Scroll'],
+                ocean: ['Ocean', 'Fish', 'Anchor', 'Ship', 'Beach'],
+                space: ['Rocket', 'Meteor', 'Satellite', 'Astronaut', 'Planet'],
+                fantasy: ['Dragon', 'Crown', 'Scroll', 'Wizard', 'Shield'],
+                poop: ['Poop', 'Waste', 'Compost', 'Trash', 'Sewage']
+            };
+            
+            const randomIcon = icons[randomType][Math.floor(Math.random() * icons[randomType].length)];
+            const randomName = names[randomType][Math.floor(Math.random() * names[randomType].length)];
+            
+            return {
+                id: `${element1.id}_${element2.id}${element3 ? '_' + element3.id : ''}_combo`,
+                name: randomName,
+                icon: randomIcon,
+                type: randomType
+            };
+        }
+
+        // Update discoveries list
+        function updateDiscoveries() {
+            discoveriesList.innerHTML = '';
+            
+            gameState.discoveries.slice(0, 5).forEach(discovery => {
+                const discoveryItem = document.createElement('div');
+                discoveryItem.className = 'discovery-item';
+                
+                let ingredients = `${discovery.element1} + ${discovery.element2}`;
+                if (discovery.element3) {
+                    ingredients += ` + ${discovery.element3}`;
+                }
+                
+                discoveryItem.innerHTML = `
+                    <i class="${discovery.resultIcon} ${discovery.result.toLowerCase()}-item"></i>
+                    <div>
+                        <div>${discovery.result}</div>
+                        <div class="stat-label">${ingredients}</div>
+                    </div>
+                `;
+                
+                discoveriesList.appendChild(discoveryItem);
+            });
+        }
+
+        // Save game to file
+        function saveGameToFile() {
+            const gameData = JSON.stringify(gameState, null, 2);
+            const blob = new Blob([gameData], { type: 'application/json' });
+            const url = URL.createObjectURL(blob);
+            
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = `infinite-craft-save-${new Date().toISOString().split('T')[0]}.json`;
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            URL.revokeObjectURL(url);
+            
+            alert('Game saved to file!');
+        }
+
+        // Load game from data
+        function loadGameFromData(savedGame) {
+            gameState = {...savedGame};
+            
+            // Ensure all required properties exist
+            if (!gameState.unlockedWorlds) gameState.unlockedWorlds = ['earth'];
+            if (!gameState.currentWorld) gameState.currentWorld = 'earth';
+            if (!gameState.coins) gameState.coins = 1250;
+            
+            renderElements();
+            updateDiscoveries();
+            updateStats();
+            
+            // Reset crafting slots
+            resetSlots();
+            resultElement.innerHTML = '<i class="fas fa-question"></i><span>Combine elements to discover new ones!</span>';
+        }
+
+        // Show worlds modal
+        function showWorldsModal() {
+            const worldsCollection = document.getElementById('worlds-collection');
+            worldsCollection.innerHTML = '';
+            
+            worldsData.forEach(world => {
+                const worldCard = document.createElement('div');
+                worldCard.className = `pet-card ${gameState.unlockedWorlds.includes(world.id) ? '' : 'locked'} ${gameState.currentWorld === world.id ? 'world-active' : ''}`;
+                
+                worldCard.innerHTML = `
+                    <i class="${world.icon}"></i>
+                    <span>${world.name}</span>
+                    ${gameState.unlockedWorlds.includes(world.id) ? 
+                        `<div class="stat-label">${world.elements.length} elements</div>` : 
+                        `<div class="stat-label">Locked</div>`
+                    }
+                    ${gameState.unlockedWorlds.includes(world.id) && gameState.currentWorld !== world.id ? 
+                        `<button class="btn btn-accent" style="margin-top: 0.5rem; width: 100%;" data-world="${world.id}">Travel</button>` : 
+                        ''
+                    }
+                `;
+                
+                worldsCollection.appendChild(worldCard);
+            });
+            
+            // Add event listeners for travel buttons
+            document.querySelectorAll('[data-world]').forEach(button => {
+                button.addEventListener('click', (e) => {
+                    const worldId = e.target.getAttribute('data-world');
+                    travelToWorld(worldId);
+                    worldsModal.style.display = 'none';
+                });
+            });
+        }
+
+        // Travel to a different world
+        function travelToWorld(worldId) {
+            gameState.currentWorld = worldId;
+            renderElements();
+            alert(`Traveled to ${worldsData.find(w => w.id === worldId).name}!`);
+        }
+
+        // Show accounts modal
+        function showAccountsModal() {
+            const accountList = document.getElementById('account-list');
+            accountList.innerHTML = '';
+            
+            // Add account items
+            Object.keys(accounts).forEach(accountName => {
+                const accountItem = document.createElement('div');
+                accountItem.className = `account-item ${accountName === currentAccount ? 'active' : ''}`;
+                
+                accountItem.innerHTML = `
+                    <div>
+                        <strong>${accountName}</strong>
+                        <div class="stat-label">${accounts[accountName].password ? 'Password Protected' : 'No Password'}</div>
+                    </div>
+                    <button class="btn btn-accent switch-account" data-account="${accountName}">
+                        Switch
+                    </button>
+                `;
+                
+                accountList.appendChild(accountItem);
+            });
+            
+            // Add event listeners for switch buttons
+            document.querySelectorAll('.switch-account').forEach(button => {
+                button.addEventListener('click', (e) => {
+                    const accountName = e.target.getAttribute('data-account');
+                    const account = accounts[accountName];
+                    
+                    if (account.password) {
+                        const password = prompt(`Enter password for account "${accountName}":`);
+                        if (password !== account.password) {
+                            alert('Incorrect password!');
+                            return;
+                        }
+                    }
+                    
+                    switchAccount(accountName);
+                    accountsModal.style.display = 'none';
+                });
+            });
+        }
+
+        // Switch to a different account
+        function switchAccount(accountName) {
+            // Save current game state
+            accounts[currentAccount].gameState = {...gameState};
+            
+            // Switch account
+            currentAccount = accountName;
+            gameState = {...accounts[accountName].gameState};
+            
+            // Update UI
+            renderElements();
+            updateDiscoveries();
+            updateStats();
+            updateAccountDisplay();
+            
+            alert(`Switched to account: ${accountName}`);
+        }
+
+        // Show pets modal
+        function showPetsModal() {
+            const petCollection = document.getElementById('pet-collection');
+            petCollection.innerHTML = '';
+            
+            // Add pet cards
+            gameState.pets.forEach(petId => {
+                const petData = elementsData.find(el => el.id === petId) || 
+                               gameState.elements.find(el => el.id === petId);
+                if (petData) {
+                    const petCard = document.createElement('div');
+                    petCard.className = 'pet-card';
+                    
+                    petCard.innerHTML = `
+                        <i class="${petData.icon}"></i>
+                        <span>${petData.name}</span>
+                    `;
+                    
+                    petCollection.appendChild(petCard);
+                }
+            });
+            
+            // Add locked pets
+            const lockedPets = [
+                { id: 'cat', name: 'Cat', icon: 'fas fa-cat' },
+                { id: 'dragon', name: 'Dragon', icon: 'fas fa-dragon' },
+                { id: 'unicorn', name: 'Unicorn', icon: 'fas fa-horse-head' }
+            ];
+            
+            lockedPets.forEach(pet => {
+                const petCard = document.createElement('div');
+                petCard.className = 'pet-card locked';
+                
+                petCard.innerHTML = `
+                    <i class="${pet.icon}"></i>
+                    <span>${pet.name}</span>
+                    <div class="stat-label">Locked</div>
+                `;
+                
+                petCollection.appendChild(petCard);
+            });
+        }
+
+        // Show recipes modal
+        function showRecipesModal() {
+            const recipeList = document.getElementById('recipe-list');
+            recipeList.innerHTML = '';
+            
+            // Add recipe cards for known combinations
+            Object.keys(elementCombinations).forEach(key => {
+                const recipe = elementCombinations[key];
+                const elements = key.split('+');
+                
+                // Only show recipes for elements the player has
+                const hasElements = elements.every(el => 
+                    gameState.elements.some(e => e.id === el)
+                );
+                
+                if (hasElements) {
+                    const recipeCard = document.createElement('div');
+                    recipeCard.className = 'recipe-card';
+                    
+                    recipeCard.innerHTML = `
+                        <i class="${recipe.icon}"></i>
+                        <span>${recipe.name}</span>
+                        <div class="recipe-ingredients">${elements.join(' + ')}</div>
+                    `;
+                    
+                    recipeCard.addEventListener('click', () => {
+                        // Auto-fill the crafting slots
+                        const element1 = document.querySelector(`[data-element="${elements[0]}"]`);
+                        const element2 = document.querySelector(`[data-element="${elements[1]}"]`);
+                        
+                        if (element1 && element2) {
+                            element1.click();
+                            setTimeout(() => {
+                                element2.click();
+                            }, 100);
+                            
+                            recipesModal.style.display = 'none';
+                        }
+                    });
+                    
+                    recipeList.appendChild(recipeCard);
+                }
+            });
+        }
+
+        // Show quick craft modal
+        function showQuickCraftModal() {
+            const quickCraftOptions = document.getElementById('quick-craft-options');
+            quickCraftOptions.innerHTML = '';
+            
+            // Add quick craft options for basic elements
+            const quickCraftElements = [
+                { name: 'Create Water', element: 'water', icon: 'fas fa-tint' },
+                { name: 'Create Fire', element: 'fire', icon: 'fas fa-fire' },
+                { name: 'Create Plant', elements: ['life', 'earth'], icon: 'fas fa-seedling' },
+                { name: 'Create Storm', elements: ['wind', 'water'], icon: 'fas fa-cloud-rain' }
+            ];
+            
+            quickCraftElements.forEach(option => {
+                const quickCraftOption = document.createElement('div');
+                quickCraftOption.className = 'quick-craft-option';
+                
+                quickCraftOption.innerHTML = `
+                    <i class="${option.icon}"></i>
+                    <span>${option.name}</span>
+                `;
+                
+                quickCraftOption.addEventListener('click', () => {
+                    if (option.element) {
+                        // Create a basic element
+                        if (!gameState.elements.some(el => el.id === option.element)) {
+                            const elementData = elementsData.find(el => el.id === option.element);
+                            if (elementData) {
+                                gameState.elements.push(elementData);
+                                renderElements();
+                                updateStats();
+                                alert(`Created ${elementData.name}!`);
+                            }
+                        } else {
+                            alert(`You already have ${option.name.split(' ')[1]}!`);
+                        }
+                    } else if (option.elements) {
+                        // Try to combine elements
+                        const element1 = option.elements[0];
+                        const element2 = option.elements[1];
+                        
+                        if (gameState.elements.some(el => el.id === element1) && 
+                            gameState.elements.some(el => el.id === element2)) {
+                            
+                            const result = findCombination(element1, element2);
+                            if (result) {
+                                if (!gameState.elements.some(el => el.id === result.id)) {
+                                    gameState.elements.push(result);
+                                    renderElements();
+                                    updateStats();
+                                    
+                                    // Add to discoveries
+                                    const element1Data = elementsData.find(el => el.id === element1) || 
+                                                         gameState.elements.find(el => el.id === element1);
+                                    const element2Data = elementsData.find(el => el.id === element2) || 
+                                                         gameState.elements.find(el => el.id === element2);
+                                    
+                                    const discovery = {
+                                        element1: element1Data.name,
+                                        element2: element2Data.name,
+                                        result: result.name,
+                                        resultIcon: result.icon
+                                    };
+                                    
+                                    gameState.discoveries.unshift(discovery);
+                                    updateDiscoveries();
+                                    
+                                    gameState.combinations++;
+                                    updateStats();
+                                    
+                                    alert(`Created ${result.name}!`);
+                                } else {
+                                    alert(`You already have ${result.name}!`);
+                                }
+                            }
+                        } else {
+                            alert('You need to unlock the required elements first!');
+                        }
+                    }
+                    
+                    quickCraftModal.style.display = 'none';
+                });
+                
+                quickCraftOptions.appendChild(quickCraftOption);
+            });
+        }
+
+        // Show marketplace modal
+        function showMarketplaceModal() {
+            const marketplaceItemsContainer = document.getElementById('marketplace-items');
+            marketplaceItemsContainer.innerHTML = '';
+            
+            // Update coins balance
+            document.getElementById('coins-balance').textContent = gameState.coins.toLocaleString();
+            
+            marketplaceItems.forEach(item => {
+                const itemCard = document.createElement('div');
+                itemCard.className = 'pet-card';
+                
+                itemCard.innerHTML = `
+                    <i class="${item.icon}"></i>
+                    <span>${item.name}</span>
+                    <div class="stat-label">Price: ${item.price} Coins</div>
+                    <button class="btn btn-accent purchase-btn" data-item="${item.id}" data-price="${item.price}" style="margin-top: 0.5rem; width: 100%;" ${gameState.coins < item.price ? 'disabled' : ''}>
+                        ${gameState.coins < item.price ? 'Not Enough Coins' : 'Purchase'}
+                    </button>
+                `;
+                
+                marketplaceItemsContainer.appendChild(itemCard);
+            });
+            
+            // Add event listeners for purchase buttons
+            document.querySelectorAll('.purchase-btn').forEach(button => {
+                button.addEventListener('click', (e) => {
+                    const itemId = e.target.getAttribute('data-item');
+                    const itemPrice = parseInt(e.target.getAttribute('data-price'));
+                    purchaseItem(itemId, itemPrice);
+                });
+            });
+        }
+
+        // Purchase item from marketplace
+        function purchaseItem(itemId, price) {
+            if (gameState.coins >= price) {
+                const item = marketplaceItems.find(i => i.id === itemId);
+                if (item) {
+                    // Check if player already has this item
+                    if (gameState.elements.some(el => el.id === itemId)) {
+                        alert(`You already have ${item.name}!`);
+                        return;
+                    }
+                    
+                    // Add item to elements
+                    gameState.elements.push({
+                        id: item.id,
+                        name: item.name,
+                        icon: item.icon,
+                        type: item.type
+                    });
+                    
+                    // Deduct coins
+                    gameState.coins -= price;
+                    
+                    // Update UI
+                    renderElements();
+                    updateStats();
+                    
+                    alert(`Purchased ${item.name} for ${price} coins!`);
+                    
+                    // Close modal
+                    marketplaceModal.style.display = 'none';
+                }
+            } else {
+                alert('Not enough coins to purchase this item!');
+            }
+        }
+
+        // Show studio crafting modal
+        function showStudioModal() {
+            const studioElementsGrid = document.getElementById('studio-elements-grid');
+            studioElementsGrid.innerHTML = '';
+            
+            // Add studio elements
+            const studioElements = [
+                { id: 'dog', name: 'Dog', icon: 'fas fa-dog', type: 'pet' },
+                { id: 'earth', name: 'Earth', icon: 'fas fa-mountain', type: 'basic' },
+                { id: 'life', name: 'Life', icon: 'fas fa-leaf', type: 'basic' }
+            ];
+            
+            studioElements.forEach(element => {
+                const elementDiv = document.createElement('div');
+                elementDiv.className = `element ${element.type}-element`;
+                elementDiv.setAttribute('data-element', element.id);
+                
+                elementDiv.innerHTML = `
+                    <i class="${element.icon}"></i>
+                    <span>${element.name}</span>
+                    ${element.type !== 'basic' ? `<div class="element-badge ${element.type}-badge">${element.type === 'pet' ? 'Pet' : element.type}</div>` : ''}
+                `;
+                
+                studioElementsGrid.appendChild(elementDiv);
+            });
+            
+            // Set up studio crafting
+            let selectedStudio1 = null;
+            let selectedStudio2 = null;
+            
+            studioElementsGrid.addEventListener('click', (e) => {
+                const element = e.target.closest('.element');
+                if (element) {
+                    const elementId = element.getAttribute('data-element');
+                    const elementData = studioElements.find(el => el.id === elementId);
+                    
+                    if (!selectedStudio1) {
+                        selectedStudio1 = elementData;
+                        document.getElementById('studio-slot1').innerHTML = `<i class="${elementData.icon}"></i><span>${elementData.name}</span>`;
+                        document.getElementById('studio-slot1').classList.add('active');
+                    } else if (!selectedStudio2) {
+                        selectedStudio2 = elementData;
+                        document.getElementById('studio-slot2').innerHTML = `<i class="${elementData.icon}"></i><span>${elementData.name}</span>`;
+                        document.getElementById('studio-slot2').classList.add('active');
+                    }
+                }
+            });
+            
+            document.getElementById('studio-combine-btn').addEventListener('click', () => {
+                if (selectedStudio1 && selectedStudio2) {
+                    const result = findCombination(selectedStudio1.id, selectedStudio2.id);
+                    
+                    if (result) {
+                        document.getElementById('studio-result-element').innerHTML = `<i class="${result.icon}"></i><span>${result.name}</span>`;
+                        
+                        // Add to studio collection if not already there
+                        if (!gameState.studios.includes(result.id) && !gameState.elements.some(el => el.id === result.id)) {
+                            gameState.elements.push(result);
+                            gameState.studios.push(result.id);
+                            renderElements();
+                            updateStats();
+                        }
+                    } else {
+                        document.getElementById('studio-result-element').innerHTML = `<i class="fas fa-times"></i><span>No studio combination found!</span>`;
+                    }
+                    
+                    // Reset slots after a delay
+                    setTimeout(() => {
+                        selectedStudio1 = null;
+                        selectedStudio2 = null;
+                        document.getElementById('studio-slot1').innerHTML = '<i class="fas fa-question"></i><span>Drag element here</span>';
+                        document.getElementById('studio-slot2').innerHTML = '<i class="fas fa-question"></i><span>Drag element here</span>';
+                        document.getElementById('studio-slot1').classList.remove('active');
+                        document.getElementById('studio-slot2').classList.remove('active');
+                    }, 2000);
+                } else {
+                    alert('Please select two elements to combine!');
+                }
+            });
+        }
+
+        // Show poop crafting modal
+        function showPoopModal() {
+            const poopElementsGrid = document.getElementById('poop-elements-grid');
+            poopElementsGrid.innerHTML = '';
+            
+            // Add poop-related elements
+            const poopElements = [
+                { id: 'earth', name: 'Earth', icon: 'fas fa-mountain', type: 'basic' },
+                { id: 'mud', name: 'Mud', icon: 'fas fa-square', type: 'basic' },
+                { id: 'dog', name: 'Dog', icon: 'fas fa-dog', type: 'pet' },
+                { id: 'water', name: 'Water', icon: 'fas fa-tint', type: 'basic' },
+                { id: 'fire', name: 'Fire', icon: 'fas fa-fire', type: 'basic' },
+                { id: 'life', name: 'Life', icon: 'fas fa-leaf', type: 'basic' }
+            ];
+            
+            poopElements.forEach(element => {
+                const elementDiv = document.createElement('div');
+                elementDiv.className = `element ${element.type}-element`;
+                elementDiv.setAttribute('data-element', element.id);
+                
+                elementDiv.innerHTML = `
+                    <i class="${element.icon}"></i>
+                    <span>${element.name}</span>
+                    ${element.type !== 'basic' ? `<div class="element-badge ${element.type}-badge">${element.type === 'pet' ? 'Pet' : element.type}</div>` : ''}
+                `;
+                
+                poopElementsGrid.appendChild(elementDiv);
+            });
+            
+            // Set up poop crafting
+            let selectedPoop1 = null;
+            let selectedPoop2 = null;
+            
+            poopElementsGrid.addEventListener('click', (e) => {
+                const element = e.target.closest('.element');
+                if (element) {
+                    const elementId = element.getAttribute('data-element');
+                    const elementData = poopElements.find(el => el.id === elementId);
+                    
+                    if (!selectedPoop1) {
+                        selectedPoop1 = elementData;
+                        document.getElementById('poop-slot1').innerHTML = `<i class="${elementData.icon}"></i><span>${elementData.name}</span>`;
+                        document.getElementById('poop-slot1').classList.add('active');
+                    } else if (!selectedPoop2) {
+                        selectedPoop2 = elementData;
+                        document.getElementById('poop-slot2').innerHTML = `<i class="${elementData.icon}"></i><span>${elementData.name}</span>`;
+                        document.getElementById('poop-slot2').classList.add('active');
+                    }
+                }
+            });
+            
+            document.getElementById('poop-combine-btn').addEventListener('click', () => {
+                if (selectedPoop1 && selectedPoop2) {
+                    const result = findCombination(selectedPoop1.id, selectedPoop2.id);
+                    
+                    if (result) {
+                        document.getElementById('poop-result-element').innerHTML = `<i class="${result.icon}"></i><span>${result.name}</span>`;
+                        
+                        // Add to poop collection if not already there
+                        if (!gameState.poop.includes(result.id) && !gameState.elements.some(el => el.id === result.id)) {
+                            gameState.elements.push(result);
+                            gameState.poop.push(result.id);
+                            renderElements();
+                            updateStats();
+                        }
+                    } else {
+                        document.getElementById('poop-result-element').innerHTML = `<i class="fas fa-times"></i><span>No poop combination found!</span>`;
+                    }
+                    
+                    // Reset slots after a delay
+                    setTimeout(() => {
+                        selectedPoop1 = null;
+                        selectedPoop2 = null;
+                        document.getElementById('poop-slot1').innerHTML = '<i class="fas fa-question"></i><span>Drag element here</span>';
+                        document.getElementById('poop-slot2').innerHTML = '<i class="fas fa-question"></i><span>Drag element here</span>';
+                        document.getElementById('poop-slot1').classList.remove('active');
+                        document.getElementById('poop-slot2').classList.remove('active');
+                    }, 2000);
+                } else {
+                    alert('Please select two elements to combine!');
+                }
+            });
+        }
+
+        // Initialize the game when the page loads
+        window.addEventListener('DOMContentLoaded', initGame);
+    </script>
+</body>
+</html>
